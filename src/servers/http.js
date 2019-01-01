@@ -2,15 +2,21 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='https://www.sczhaoqi.com'; //填写域名
+axios.defaults.baseURL ='http://localhost:8080/api'; //填写域名
+// axios.defaults.baseURL ='https://www.sczhaoqi.com'; //填写域名
 
 //http request 拦截器
 axios.interceptors.request.use(
     config => {
         config.data = JSON.stringify(config.data);
         config.headers = {
-            'Content-Type':'application/x-www-form-urlencoded',
+            'Content-Type':'application/json',
         };
+        let token = sessionStorage.getItem('token')
+        if (token) {
+            config.headers.Authorization = 'Bearer '+ token;
+        }
+        // console.log( config)
         return config;
     },
     error => {
@@ -66,7 +72,8 @@ axios.interceptors.response.use(response => {
     } else {
         Message('连接到服务器失败');
     }
-    return Promise.resolve(err.response);
+    return Promise.resolve();
+    // return Promise.resolve(err.response);
 });
 
 

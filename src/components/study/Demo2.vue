@@ -48,7 +48,7 @@
             :page-size="pagesize"
             background
             layout="total, sizes, -> ,prev, pager,next, jumper"
-            :total="total">
+            :total="goods.length">
           </el-pagination>
         </div>
       </div>
@@ -59,6 +59,7 @@
 <script>
 import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
 import VueScrollbar from 'vue2-scrollbar';
+
 export default {
   data(){
     return {
@@ -67,7 +68,6 @@ export default {
       goods: [],
       pagesize: 10,  
       currentPage:1,
-      total:0,
       isLoading: false,
     }
   },
@@ -80,12 +80,14 @@ export default {
       // var api ='https://sczhaoqi.com/api.php?n=100';  
       this.isLoading = true;
       setTimeout(() =>
-      this.$server.exam([]).then((data) => {
-        this.goods = data
-        this.total = this.goods.length
-        this.isLoading = false;  
-      }), 2000)
-
+      this.$api.listGoods({'n':100}).then(res => {
+        if(res.data){
+          this.goods = res.data;
+        }
+        this.isLoading = false
+      }).catch(() => {
+        this.isLoading = false
+      }),1000);
     },
      clearData(){
       this.goods = []

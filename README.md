@@ -27,3 +27,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Backend code demo
+See [sczhaoqi/springboot-security-jwt](https://github.com/sczhaoqi/springboot-security-jwt)

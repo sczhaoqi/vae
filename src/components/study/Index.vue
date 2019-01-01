@@ -23,8 +23,9 @@
                 <span slot="title">分组一</span>
                   <el-menu-item index="/study" key="home">首页</el-menu-item>
                   <el-menu-item index="/study/demo1" key="demo1">示例1</el-menu-item>
-                  <el-menu-item index="/study/demo2" key="demo2">示例2</el-menu-item>
+                  <el-menu-item index="/study/demo2" key="demo2">示例2-前端分页</el-menu-item>
                   <el-menu-item index="/study/demo3" key="demo3">示例3</el-menu-item>
+                  <el-menu-item index="/study/demo4" key="demo4">示例4-后端分页</el-menu-item>
               </el-menu-item-group>
               <el-menu-item-group title="分组2">
                 <el-menu-item index="1-3">选项3</el-menu-item>

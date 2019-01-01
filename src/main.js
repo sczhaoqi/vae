@@ -6,12 +6,12 @@ import store from './store'
 /*引入公共样式*/
 import './assets/styles/common.css';
 
-import {server} from './servers/http.js';
+import api from './servers/api.js';
 import './plugins/element.js';
 
 
 //定义全局变量
-Vue.prototype.$server=server;
+Vue.prototype.$api=api;
 
 Vue.config.productionTip = false
 

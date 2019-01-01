@@ -28,6 +28,7 @@
 </template>
  
 <script>
+import * as types from '../stores/types'
 export default {
    data() {
       return {
@@ -38,11 +39,11 @@ export default {
         rules: {
           username: [
             { required: true, message: '请输入账号', trigger: 'blur' },
-            { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
+            { min: 5, max: 16, message: '长度在 5 到 16 个字符', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
+            { min: 5, max: 16, message: '长度在 5 到 16 个字符', trigger: 'blur' }
           ]
         },
         checked: false
@@ -55,6 +56,7 @@ export default {
     },
     methods: {
       submitForm(formName) {
+        let _this = this
         this.$refs[formName].validate((valid) => {
          if (valid) {
             const self = this;
@@ -62,18 +64,27 @@ export default {
             if (self.checked == true) {
                 //传入账号名，密码，和保存天数3个参数
                 self.setCookie(self.ruleForm.username, self.ruleForm.password, 7);
-            }else {
+            } else {
               console.log("清空Cookie");
               //清空Cookie
               self.clearCookie();
-          }
-            // alert('登录成功!');
-            sessionStorage.setItem('user', this.ruleForm.username);
-            if(this.$route.query.redirect != ''){
-                this.$router.push({ path: this.$route.query.redirect,params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
-            }else{
-                this.$router.push({ path: '/home',params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
             }
+
+            _this.$api.login({username:self.ruleForm.username,password:self.ruleForm.password}).then(data =>{
+              if(data){
+                console.log(data)
+                this.$store.commit('login', data)
+                console.log(_this.$store.state.token)
+              }
+            }).catch(() =>{
+              console.log('登陆失败')
+            }).then(() =>{
+              if(this.$route.query.redirect != ''){
+                  this.$router.replace({ path: this.$route.query.redirect,params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
+              }else{
+                  this.$router.replace({ path: '/',params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
+              }
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -88,7 +99,7 @@ export default {
           var exdate = new Date(); //获取时间
           exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
           //字符串拼接cookie
-          window.document.cookie = "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+          window.document.cookie = "username" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
           window.document.cookie = "password" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
       },
       //读取cookie
@@ -98,7 +109,7 @@ export default {
               for (var i = 0; i < arr.length; i++) {
                   var arr2 = arr[i].split('='); //再次切割
                   //判断查找相对应的值
-                  if (arr2[0] == 'userName') {
+                  if (arr2[0] == 'username') {
                     //  console.log(arr2[1])
                       this.ruleForm.username = arr2[1]; //保存到保存数据的地方
                   } else if (arr2[0] == 'password') {
