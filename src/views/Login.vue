@@ -70,19 +70,21 @@ export default {
               self.clearCookie();
             }
 
-            _this.$api.login({username:self.ruleForm.username,password:self.ruleForm.password}).then(data =>{
-              if(data){
-                console.log(data)
-                this.$store.commit('login', data)
-                console.log(_this.$store.state.token)
-              }
-            }).catch(() =>{
-              console.log('登陆失败')
-            }).then(() =>{
-              if(this.$route.query.redirect != ''){
-                  this.$router.replace({ path: this.$route.query.redirect,params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
+            _this.$api.login({username:self.ruleForm.username,password:self.ruleForm.password}).then((data) =>{
+              if(data.code && data.code === 200){
+                this.$store.commit(types.LOGIN, data.data)
               }else{
-                  this.$router.replace({ path: '/',params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
+                this.$message({
+                  type:'error',
+                  message: data.msg 
+                })
+              }
+            }).then(() =>{
+              let redirect = this.$route.query.redirect
+              if(redirect && this.$route.query.redirect != ''){
+                this.$router.replace({ path: this.$route.query.redirect,params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});
+              }else{
+                this.$router.replace({ path: '/'});
               }
             })
           } else {
