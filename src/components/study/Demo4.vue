@@ -68,7 +68,7 @@
         </div>
       </div>
     </VueScrollbar>
-    <el-dialog title="编辑货品" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑货品" :visible.sync="editFormVisible">
       <el-form :model="form">
         <el-form-item label="商品名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -95,8 +95,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false;editSubmit()">确 定</el-button>
+        <el-button @click="editFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editFormVisible = false;editSubmit()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -117,6 +117,7 @@ export default {
       currentPage:1,
       isLoading: false,
       dialogFormVisible: false,
+      editFormVisible: false,
       form: {
         id: '',
         name: '',
@@ -152,7 +153,7 @@ export default {
     handleClick(row){
       this.form = JSON.parse(JSON.stringify(row))
       this.tmpForm = row
-      this.dialogFormVisible = true;
+      this.editFormVisible = true;
     },
     deleteClick(row){
       this.$confirm('删除\''+row.name+'\', 是否继续?', '提示', {
