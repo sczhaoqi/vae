@@ -81,8 +81,8 @@ export default {
       this.isLoading = true;
       setTimeout(() =>
       this.$api.listGoods({'n':100}).then(res => {
-        if(res.data){
-          this.goods = res.data;
+        if(res.data && res.data.list){
+          this.goods = res.data.list;
         }
         this.isLoading = false
       }).catch(() => {
