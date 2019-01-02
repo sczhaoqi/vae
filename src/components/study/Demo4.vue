@@ -4,70 +4,68 @@
       <button @click="getData()">获取数据</button>
       <button @click="clearData()">清除数据</button>
     </div>
-    <VueScrollbar class="scroll-area">
-      <div class="scroll-content">
-        <el-table
-          style="flex:1;width:100%;"
-          :data="goods"
-          stripe
-          border
-          v-loading="isLoading"
-          element-loading-text="拼命加载中..."
-          @sort-change="tableSortChange"
-          @selection-change="tableSelectionChange">
-          <el-table-column
-            type="selection"
-            width="60"
-            prop="index"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="商品名">
-             <template slot-scope="scope">
-              <el-popover
-                placement="bottom-start"
-                :title="scope.row.name"
-                :content="scope.row.details"
-                width="200"
-                trigger="hover"
-                v-model="scope.row.visible">
-                <span slot="reference">{{scope.row.name}}</span>
-                <el-button @click="handleClick(scope.row)" type="text" slot="reference" size="mini" icon="el-icon-view"></el-button>
-              </el-popover>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="catalog"
-            label="类别">
-          </el-table-column>
-          <el-table-column
-            prop="price"
-            label="价格">
-          </el-table-column>
-          <el-table-column
-            label="操作"
-            width="120px">
+    <div class="scroll-content">
+      <!-- set height, 固定表头 -->
+      <el-table
+        :data="goods"
+        border
+        height="60px" 
+        v-loading="isLoading"
+        element-loading-text="拼命加载中..."
+        @sort-change="tableSortChange"
+        @selection-change="tableSelectionChange">
+        <el-table-column
+          type="selection"
+          width="60"
+          prop="index"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="商品名">
             <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="primary" size="mini" icon="el-icon-edit"></el-button>
-              <el-button @click="deleteClick(scope.row)" type="danger" size="mini" icon="el-icon-delete"></el-button>
-            </template>
-            </el-table-column>
-        </el-table>
-        <div class="page-div">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="pagesize"
-            background
-            layout="total, sizes, -> ,prev, pager,next, jumper"
-            :total="total">
-          </el-pagination>
-        </div>
+            <el-popover
+              placement="bottom-start"
+              :title="scope.row.name"
+              :content="scope.row.details"
+              width="200"
+              trigger="hover"
+              v-model="scope.row.visible">
+              <span slot="reference">{{scope.row.name}}</span>
+              <el-button @click="handleClick(scope.row)" type="text" slot="reference" size="mini" icon="el-icon-view"></el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="catalog"
+          label="类别">
+        </el-table-column>
+        <el-table-column
+          prop="price"
+          label="价格">
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="120px">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="primary" size="mini" icon="el-icon-edit"></el-button>
+            <el-button @click="deleteClick(scope.row)" type="danger" size="mini" icon="el-icon-delete"></el-button>
+          </template>
+          </el-table-column>
+      </el-table>
+      <div class="page-div">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="pagesize"
+          background
+          layout="total, sizes, -> ,prev, pager,next, jumper"
+          :total="total">
+        </el-pagination>
       </div>
-    </VueScrollbar>
+    </div>
     <el-dialog title="编辑货品" :visible.sync="editFormVisible">
       <el-form :model="form">
         <el-form-item label="商品名称" :label-width="formLabelWidth">
@@ -103,9 +101,6 @@
 </template>
 
 <script>
-import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
-import VueScrollbar from 'vue2-scrollbar';
-
 export default {
   data(){
     return {
@@ -130,7 +125,6 @@ export default {
     }
   },
   components:{
-    VueScrollbar
   },
   methods:{
     
@@ -236,17 +230,24 @@ export default {
 .demo2-sticky-header{
   height: 40px;
 }
-.scroll-area {
-  margin: auto;
-  flex: 1;
-  width: 100%;
-}
 .scroll-content{
   // background: red;
   padding: 10px;
   // width: 100%;
-  display: flex;
+  display: -webkit-flex;
+  flex: 1;
   flex-direction: column;
+}
+/*滚动条样式*/
+//滚动条的宽度
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+//滚动条的滑块
+::-webkit-scrollbar-thumb {
+  background-color: #a1a3a9;
+  border-radius: 3px;
 }
 .page-div{
   max-width: 800px;
