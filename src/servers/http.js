@@ -34,7 +34,9 @@ axios.interceptors.response.use(response => {
             Message('错误请求');
             break;
         case 401:
-            Message('未授权，请重新登录');
+            Message({
+                type: 'error',
+                message: '授权失败，请重新登录'});
             break;
         case 403:
             Message('拒绝访问');
