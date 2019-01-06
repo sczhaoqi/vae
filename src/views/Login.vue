@@ -1,27 +1,30 @@
 <template>
     <div class="login">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="50px" class="demo-ruleForm">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
         
-        <el-form-item label="账号" prop="username">
-          <el-input v-model="ruleForm.username" autocomplete="on"></el-input>
+        <el-form-item label="账号" prop="username" >
+          <el-input prefix-icon='iconfont icon-yonghu' v-model="ruleForm.username" autocomplete="on" @change="checkValid"></el-input>
         </el-form-item>
  
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" autocomplete="on"></el-input>
+          <el-input prefix-icon='iconfont icon-suoding' type="password" v-model="ruleForm.password" autocomplete="on" @change="checkValid"></el-input>
         </el-form-item>
- 
-        <div class="box clearfix">
-          <span class="lf" @click="clearCookie" style="cursor: pointer;color: #f19149;font-size: 0.75rem;margin-left: 5px;">忘记密码？</span>
-          <div class="rt">
-            <el-checkbox v-model="checked" style="color:#a0a0a0;">一周内自动登录</el-checkbox>
-          </div>
+        <div>
+            <el-checkbox v-model="checked" class="remember" >一周内自动登录</el-checkbox>
+            <span class="forget-password" @click="clearCookie">忘记密码？</span>
         </div>
  
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')" style="width:100%;">登录</el-button>
-        <!--  <el-button @click="resetForm('ruleForm')">重置</el-button> -->
+          <el-button 
+          type="primary" 
+          class="submitBtn"
+          @click.native.prevent="submitForm('ruleForm')"
+          :disabled="!isValid"
+          :loading="isLoging">登录</el-button>
         </el-form-item>
       </el-form>
+      <hr>
+      <p>还没有账号，马上去<span class="to" @click="toregin">注册</span></p>
     </div>
  
  
@@ -29,13 +32,20 @@
  
 <script>
 import * as types from '../stores/types'
+import '../assets/icons/iconfont.css'
 export default {
+   components:{
+   },
    data() {
       return {
+        userIcon: require('../assets/img/yonghu.png'),
+        pwdIcon: require('../assets/img/suoding.png'),
         ruleForm: {
           username: '',
           password:''
         },
+        isLoging: false,
+        isValid: false,
         rules: {
           username: [
             { required: true, message: '请输入账号', trigger: 'blur' },
@@ -47,18 +57,19 @@ export default {
           ]
         },
         checked: false
-    
       };
     },
     //页面加载调用获取cookie值
     mounted() {
         this.getCookie();
+        this.checkValid();
     },
     methods: {
       submitForm(formName) {
         let _this = this
         this.$refs[formName].validate((valid) => {
          if (valid) {
+            this.isLoging = true;
             const self = this;
             //判断复选框是否被勾选 勾选则调用配置cookie方法
             if (self.checked == true) {
@@ -73,12 +84,17 @@ export default {
             _this.$api.login({username:self.ruleForm.username,password:self.ruleForm.password}).then((data) =>{
               if(data.code && data.code === 200){
                 this.$store.commit(types.LOGIN, data.data)
+                 this.$message({
+                  type:'success',
+                  message: '登陆成功' 
+                })
               }else{
                 this.$message({
                   type:'error',
                   message: data.msg 
                 })
               }
+              this.isLoging = false;
             }).then(() =>{
               let redirect = this.$route.query.redirect
               if(redirect && this.$route.query.redirect != ''){
@@ -89,13 +105,23 @@ export default {
             })
           } else {
             console.log('error submit!!');
+            this.isLoging = false;
             return false;
           }
         });
       },
-      // resetForm(formName) {
-      //   this.$refs[formName].resetFields();
-      // },
+      checkValid(){
+        let uname = this.ruleForm.username.length
+        let upwd = this.ruleForm.password.length
+        if(uname >=5 && upwd>= 5 && uname <= 16 && upwd <= 16){
+          this.isValid = true;
+        }else{
+          this.isValid = false;
+        }
+      },
+      toregin () {
+        this.$router.push('/regin')
+      },
       //设置cookie
       setCookie(c_name, c_pwd, exdays) {
           var exdate = new Date(); //获取时间
@@ -132,18 +158,29 @@ export default {
  
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.login{
-  min-width: 350px;
-	width: 25%;
-	margin: auto;
+.login {
+  margin: 20px auto;
+  width: 310px;
+  background: #fff;
+  box-shadow: 0 0 35px #B4BCCC;
+  padding: 30px 30px 0 30px;
+  border-radius: 5px; 
 }
-.lf{
-  float: left;
+.submitBtn {
+  width: 100%;
 }
-.box{
-  min-width: 350px;
-  margin-left:50px; 
-	width: 30%;
+.to {
+  color: #67C23A;
+  cursor: pointer;
+}
+.forget-password{
+  float: right;
+  cursor: pointer;
+  color: #f19149;
+  font-size: 0.75rem;
+}
+.remember{
+  color:#a0a0a0;
 }
 .rf{
   float:right;

@@ -240,14 +240,16 @@ export default {
 }
 /*滚动条样式*/
 //滚动条的宽度
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-//滚动条的滑块
-::-webkit-scrollbar-thumb {
-  background-color: #a1a3a9;
-  border-radius: 3px;
+.scroll-content{
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  //滚动条的滑块
+  ::-webkit-scrollbar-thumb {
+    background-color: #a1a3a9;
+    border-radius: 5px;
+  }
 }
 .page-div{
   max-width: 800px;
