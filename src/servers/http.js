@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='http://localhost:8080/api'; //填写域名
+axios.defaults.baseURL ='http://localhost:8081/api'; //填写域名
 // axios.defaults.baseURL ='https://www.sczhaoqi.com'; //填写域名
 
 //http request 拦截器

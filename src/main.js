@@ -15,6 +15,10 @@ Vue.prototype.$api=api;
 
 Vue.config.productionTip = false
 
+import VueSocketIO from 'vue-socket.io'
+
+Vue.use(VueSocketIO, 'http://local host:8080/websocket/1/');
+
 new Vue({
   router,
   store,

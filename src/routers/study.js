@@ -4,6 +4,8 @@ import Demo2 from '../components/study/Demo2.vue';
 import Demo3 from '../components/study/Demo3.vue';
 import Demo4 from '../components/study/Demo4.vue';
 import Details from '../components/study/Details.vue';
+import VWebSocket from '../components/study/TWebSocket.vue';
+
 export default function (router) {
     router.addRoutes(
         [
@@ -17,6 +19,7 @@ export default function (router) {
                     { path: 'demo3', component: Demo3 },
                     { path: 'demo4', component: Demo4 },
                     { path: 'details', component: Details },
-                    { path: 'details/:gid', component: Details }]},
+                    { path: 'details/:gid', component: Details },
+                    { path: 'websocket', component: VWebSocket }]},
         ]);
 } 

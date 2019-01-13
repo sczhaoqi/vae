@@ -95,7 +95,7 @@ export default {
                 })
               }
               this.isLoging = false;
-            }).then(() =>{
+            }, () => {this.isLoging = false;}).then(() =>{
               let redirect = this.$route.query.redirect
               if(redirect && this.$route.query.redirect != ''){
                 this.$router.replace({ path: this.$route.query.redirect,params:{user:self.ruleForm.username,pwd:self.ruleForm.password}});

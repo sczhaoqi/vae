@@ -31,8 +31,8 @@
                 <el-menu-item index="1-3">选项3</el-menu-item>
               </el-menu-item-group>
               <el-submenu index="1-4">
-                <span slot="title">选项4</span>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
+                <span slot="title">WebSocket</span>
+                <el-menu-item index="/study/websocket">WebSocket</el-menu-item>
               </el-submenu>
             </el-submenu>
             <el-menu-item index="2">
