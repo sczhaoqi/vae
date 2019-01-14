@@ -3,8 +3,12 @@
     <div>
         <h2>{{title}}</h2>
         <hr>
-        <div>
-            {{content}}
+        <div style="max-height:60%">
+            <ol>
+                <li v-for="(msg,key) in messages" :key="key">
+                     {{msg}}
+                </li>
+            </ol>
         </div>
         <hr>
         <el-form>
@@ -29,6 +33,7 @@ export default {
             title: "WebSocket",
             message: "",
             content: "",
+            messages: [],
         }
     },
     sockets: {
@@ -40,10 +45,11 @@ export default {
         }
     },
     mounted(){
-        console.log("lifecycle function")
-        this.sockets.subscribe('EVENT_NAME', (data) => {
-            this.content += data.message;
-        });
+        console.log(this)
+        this.$options.sockets.onmessage= (data) => {
+            console.log(data)
+            this.messages.push(data.data);
+        };
         //this.sockets.unsubscribe('EVENT_NAME');
     },methods:{
         hello(data){

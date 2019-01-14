@@ -9,15 +9,13 @@ import './assets/styles/common.css';
 import api from './servers/api.js';
 import './plugins/element.js';
 
-
 //定义全局变量
 Vue.prototype.$api=api;
 
 Vue.config.productionTip = false
 
-import VueSocketIO from 'vue-socket.io'
-
-Vue.use(VueSocketIO, 'http://local host:8080/websocket/1/');
+import VueNativeSock from 'vue-native-websocket'
+Vue.use(VueNativeSock, 'ws://localhost:8080/websocket/1')
 
 new Vue({
   router,
