@@ -24,7 +24,10 @@ const api= {
   },
   delete(id){
     return server.fetch('/goods/delete', {"id":id})
-  }
+  },
+  download(){
+    return server.file('/file/down')
+  },
 }
  
 export default api
