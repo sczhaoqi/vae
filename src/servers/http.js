@@ -86,6 +86,47 @@ axios.interceptors.response.use(response => {
  * @returns {Promise}
  */
 
+export function file(url,params={}){
+    return new Promise((resolve,reject) => {
+        axios.get(url,{
+            params:params,
+            responseType: 'blob',
+        })
+            .then(response => {
+                const data = response.data;
+                if (!data) {
+                    return
+                  }
+                  let blob = new Blob([data])
+                  let fileName = 'excel.xlsx'
+                  if ('download' in document.createElement('a')) { // 不是IE浏览器
+                    let url = window.URL.createObjectURL(blob)
+                    let link = document.createElement('a')
+                    link.style.display = 'none'
+                    link.href = url
+                    link.setAttribute('download', fileName)
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link) // 下载完成移除元素
+                    window.URL.revokeObjectURL(url) // 释放掉blob对象
+                  } else { // IE 10+
+                    window.navigator.msSaveBlob(blob, fileName)
+                  }
+                resolve(response);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+}
+
+/**
+ * 封装get方法
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+
 export function fetch(url,params={}){
     return new Promise((resolve,reject) => {
         axios.get(url,{
@@ -99,7 +140,6 @@ export function fetch(url,params={}){
             });
     });
 }
-
 
 /**
  * 封装post请求
