@@ -11,7 +11,7 @@
         <code v-text="'<el-button>'"></code>
         below
       </p>
-      <el-button>el-button</el-button>
+      <el-button @click="download">el-button</el-button>
     </div>
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
@@ -26,6 +26,13 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  methods: {
+    download(){
+      this.$api.download().then(res => {
+        
+      })
+    }
   }
 }
 </script>
